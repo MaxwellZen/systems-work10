@@ -9,3 +9,5 @@ struct manga* set_manga(char *s, int c);
 void print_list(struct manga *a);
 struct manga * insert_front(struct manga *a, char *s, int c);
 struct manga * free_list(struct manga *a);
+int equals(struct manga* a, char* s, int c);
+struct manga * remove_node(struct manga *front, char* s, int c);

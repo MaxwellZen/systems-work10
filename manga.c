@@ -10,7 +10,7 @@ struct manga {
 };
 
 void print_manga(struct manga *a) {
-	printf("The %s manga is %d chapters long!\n", a->title, a->chapters);
+	printf("%s - %d chapters long", a->title, a->chapters);
 }
 
 struct manga* set_manga(char *s, int c) {
@@ -22,10 +22,13 @@ struct manga* set_manga(char *s, int c) {
 }
 
 void print_list(struct manga *a) {
+	printf("[ ");
 	while (a) {
 		print_manga(a);
+		if (a->next) printf(" | ");
 		a = a->next;
 	}
+	printf(" ]\n");
 }
 
 struct manga * insert_front(struct manga *a, char *s, int c) {
@@ -40,5 +43,28 @@ struct manga * free_list(struct manga *a) {
 		free(a);
 		a = b;
 	}
-	return 0;
+	return a;
+}
+
+int equals(struct manga* a, char* s, int c) {
+	return strcmp(a->title, s)==0 && a->chapters==c;
+}
+
+struct manga * remove_node(struct manga *front, char* s, int c) {
+	if (equals(front, s, c)) {
+		struct manga *ans = front->next;
+		free(front);
+		return ans;
+	}
+	struct manga *ans = front, *prev = front, *cur = front->next;
+	while (cur) {
+		if (equals(cur, s, c)) {
+			prev->next = cur->next;
+			free(cur);
+			return ans;
+		}
+		prev = cur;
+		cur = cur->next;
+	}
+	return ans;
 }
